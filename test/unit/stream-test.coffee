@@ -1,14 +1,16 @@
 R = require 'ramda'
 chai = require 'chai'
 chai.should()
-stream = require '../../lib/stream'
+Stream = require '../../lib/stream'
 
 describe 'stream', ->
 
-  Stream = stream(R)
+  When -> @subject = Stream()
 
-  When ->
-    @subject = Stream()
+  describe '#extract', ->
+    Given -> @subject = Stream.of(1)
+    When -> @result = @subject.extract()
+    Then -> @result == 1
 
   describe '#put', ->
     When ->
@@ -66,3 +68,28 @@ describe 'stream', ->
       resultStream = Stream.of([4,5,6]).chain(createLengthStream)
       @result = resultStream()
     Then -> @result == 3
+
+  describe '#reduce', ->
+    appendTo = R.flip R.append
+    When ->
+      @s1 = Stream.of(1)
+      @s2 = @s1.reduce appendTo, []
+      @result = @s2()
+    Then -> @result.should.deep.equal [ 1 ]
+
+    describe '- adding new', ->
+      When ->
+        @s2.subscribe (@result) =>
+        @s1.put(4)
+      Then -> @result.should.deep.equal [ 1, 4 ]
+
+      describe '- again', ->
+        When -> @s1.put(5)
+        Then -> @result.should.deep.equal [ 1, 4, 5 ]
+
+    describe '- deep', ->
+      When ->
+        s3 = @s2.reduce R.concat, [ 3 ]
+        @result = s3()
+      Then -> @result.should.deep.equal [ 3, 1 ]
+
