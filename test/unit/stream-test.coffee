@@ -5,15 +5,22 @@ stream = require '../../lib/stream'
 
 describe 'stream', ->
 
+  Stream = stream(R)
+
   When ->
-    Stream = stream(R)
     @subject = Stream()
 
   describe '#put', ->
     When ->
       @subject.put(1)
       @result = @subject()
-    Then -> @result.should.deep.equal [ 1 ]
+    Then -> @result == 1
+
+  describe '#of', ->
+    When ->
+      s = Stream.of('foo')
+      @result = s()
+    Then -> @result == 'foo'
 
   describe '#subscribe', ->
     When -> @subject.subscribe(@subscribeFn)
@@ -45,3 +52,17 @@ describe 'stream', ->
         s3.subscribe (@result) =>
         @subject.put 2
       Then -> @result == 15
+
+  describe '#ap', ->
+    When ->
+      s1 = Stream.of(R.add(1))
+      s2 = s1.ap(Stream.of(2))
+      @result = s2()
+    Then -> @result == 3
+
+  describe '#chain', ->
+    When ->
+      createLengthStream = (val) -> Stream.of val.length
+      resultStream = Stream.of([4,5,6]).chain(createLengthStream)
+      @result = resultStream()
+    Then -> @result == 3
