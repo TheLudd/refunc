@@ -5,26 +5,26 @@ Stream = require '../../lib/stream'
 
 describe 'stream', ->
 
-  When -> @subject = Stream()
-
   describe '#extract', ->
     Given -> @subject = Stream.of(1)
     When -> @result = @subject.extract()
     Then -> @result == 1
 
   describe '#put', ->
+    Given -> @subject = Stream()
     When ->
       @subject.put(1)
-      @result = @subject()
+      @result = @subject.extract()
     Then -> @result == 1
 
   describe '#of', ->
     When ->
       s = Stream.of('foo')
-      @result = s()
+      @result = s.extract()
     Then -> @result == 'foo'
 
   describe '#subscribe', ->
+    Given -> @subject = Stream()
     When -> @subject.subscribe(@subscribeFn)
 
     describe '- receives events', ->
@@ -42,6 +42,7 @@ describe 'stream', ->
       Then -> @result.should.deep.equal ['foo', 'bar']
 
   describe '#map', ->
+    Given -> @subject = Stream()
     When ->
       @s2 = @subject.map(R.add(1))
       @s2.subscribe (@result) =>
@@ -59,14 +60,14 @@ describe 'stream', ->
     When ->
       s1 = Stream.of(R.add(1))
       s2 = s1.ap(Stream.of(2))
-      @result = s2()
+      @result = s2.extract()
     Then -> @result == 3
 
   describe '#chain', ->
     When ->
       createLengthStream = (val) -> Stream.of val.length
       resultStream = Stream.of([4,5,6]).chain(createLengthStream)
-      @result = resultStream()
+      @result = resultStream.extract()
     Then -> @result == 3
 
   describe '#reduce', ->
@@ -74,7 +75,7 @@ describe 'stream', ->
     When ->
       @s1 = Stream.of(1)
       @s2 = @s1.reduce appendTo, []
-      @result = @s2()
+      @result = @s2.extract()
     Then -> @result.should.deep.equal [ 1 ]
 
     describe '- adding new', ->
@@ -90,6 +91,6 @@ describe 'stream', ->
     describe '- deep', ->
       When ->
         s3 = @s2.reduce R.concat, [ 3 ]
-        @result = s3()
+        @result = s3.extract()
       Then -> @result.should.deep.equal [ 3, 1 ]
 
