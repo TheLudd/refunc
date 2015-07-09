@@ -1,0 +1,11 @@
+{
+  "name": "funtest",
+  "version": "0.1.0",
+  "description": "Some fun testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ludwig Magnusson",
+  "license": "ISC"
+}
