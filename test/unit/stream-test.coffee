@@ -94,3 +94,11 @@ describe 'stream', ->
         @result = s3.extract()
       Then -> @result.should.deep.equal [ 3, 1 ]
 
+  describe '#unsubscribe', ->
+    Given -> @subject = Stream()
+    When ->
+      cb = (@result) =>
+      @subject.subscribe cb
+      @subject.unsubscribe cb
+      @subject.put 'foo'
+    Then -> @result == undefined
