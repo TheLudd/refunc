@@ -17,5 +17,10 @@
     "mocha-given": "^0.1.3",
     "mocha-gwt": "^0.1.14",
     "ramda": "^0.15.1"
-  }
+  },
+  "keywords": [
+    "fantasy-land",
+    "frp",
+    "functional reactive programming"
+  ]
 }
