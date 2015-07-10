@@ -8,14 +8,12 @@
   },
   "author": "Ludwig Magnusson",
   "license": "ISC",
-  "dependencies": {
-    "ramda": "^0.15.1"
-  },
   "devDependencies": {
     "chai": "^3.0.0",
     "coffee-script": "^1.9.3",
     "mocha": "^2.2.5",
     "mocha-given": "^0.1.3",
-    "mocha-gwt": "^0.1.14"
+    "mocha-gwt": "^0.1.14",
+    "ramda": "^0.15.1"
   }
 }
