@@ -1,6 +1,4 @@
 R = require 'ramda'
-chai = require 'chai'
-chai.should()
 Stream = require '../../lib/stream'
 
 describe 'stream', ->
