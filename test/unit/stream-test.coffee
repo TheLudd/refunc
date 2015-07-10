@@ -1,5 +1,5 @@
 R = require 'ramda'
-Stream = require '../../lib/stream'
+Stream = getDep 'lib/stream'
 
 describe 'stream', ->
 

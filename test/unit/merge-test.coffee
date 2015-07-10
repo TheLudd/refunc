@@ -1,5 +1,5 @@
-merge = require '../../lib/merge'
-Stream = require '../../lib/stream'
+merge = getDep 'lib/merge'
+Stream = getDep 'lib/stream'
 
 describe 'merge', ->
 
