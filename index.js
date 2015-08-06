@@ -3,4 +3,4 @@ module.exports = {
   merge: require('./lib/merge'),
   mapMerge: require('./lib/map-merge'),
   reduceMerge: require('./lib/reduce-merge')
-};
+}
