@@ -23,3 +23,11 @@ describe 'reduceMerge', ->
     @s2.put(1)
     @result = @subject.extract()
   Then -> @result.should.deep.equal [ 2 ]
+
+  describe 'adds previous stream events', ->
+    Given ->
+      @s1.put 'a'
+      @s1.put 'b'
+      @s2.put 'b'
+    Then -> @result.should.deep.equal [ 'a', 2 ]
+

@@ -100,3 +100,11 @@ describe 'stream', ->
       @subject.unsubscribe cb
       @subject.put 'foo'
     Then -> @result == undefined
+
+  describe '#drain', ->
+    Given ->
+      @subject = Stream()
+      @subject.put(1)
+      @subject.put(2)
+    When -> @result = @subject.drain()
+    Then -> @result.should.deep.equal [ 1, 2 ]
