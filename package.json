@@ -1,7 +1,7 @@
 {
-  "name": "funtest",
+  "name": "refunc",
   "version": "0.1.0",
-  "description": "Some fun testing",
+  "description": "Non bloated fantasy landish functional reactive programming",
   "main": "index.js",
   "scripts": {
     "doc": "jsdoc lib",
