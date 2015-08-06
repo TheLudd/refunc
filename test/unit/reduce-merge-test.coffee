@@ -10,24 +10,40 @@ describe 'reduceMerge', ->
     copy.splice i, 1
     return copy
 
-  Given ->
-    @s1 = Stream()
-    @s2 = Stream()
-  When ->
-    @subject = reduceMerge [], [
-      [ @s1, concat ]
-      [ @s2, remove ]
-    ]
-    @s1.put(1)
-    @s1.put(2)
-    @s2.put(1)
-    @result = @subject.extract()
-  Then -> @result.should.deep.equal [ 2 ]
+  When -> @subject = reduceMerge [], @reduceStreams
 
-  describe 'adds previous stream events', ->
+  describe 'when joining several streams', ->
     Given ->
-      @s1.put 'a'
-      @s1.put 'b'
-      @s2.put 'b'
-    Then -> @result.should.deep.equal [ 'a', 2 ]
+      @s1 = Stream()
+      @s2 = Stream()
+      @reduceStreams = [
+        [ @s1, concat ]
+        [ @s2, remove ]
+      ]
 
+    describe 'contains the initial value before any events are put', ->
+      When -> @result = @subject.extract()
+      Then -> @result.should.deep.equal []
+
+    describe 'contains the reduced value', ->
+      When ->
+        @s1.put(1)
+        @s1.put(2)
+        @s2.put(1)
+        @result = @subject.extract()
+      Then -> @result.should.deep.equal [ 2 ]
+
+    describe 'adds previous stream events', ->
+      Given ->
+        @s1.put 'a'
+        @s1.put 'b'
+        @s2.put 'b'
+      When ->
+        @s1.put(2)
+        @result = @subject.extract()
+      Then -> @result.should.deep.equal [ 'a', 2 ]
+
+  describe 'contains the initial value if no streams are merged', ->
+    Given -> @reduceStreams = []
+    When -> @result = @subject.extract()
+    Then -> @result.should.deep.equal [ ]
