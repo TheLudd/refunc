@@ -41,18 +41,29 @@ describe 'stream', ->
 
   describe '#map', ->
     Given -> @subject = Stream()
-    When ->
-      @s2 = @subject.map(R.add(1))
-      @s2.subscribe (@result) =>
-      @subject.put 1
-    Then -> @result == 2
+    When -> @s2 = @subject.map(R.add(1))
 
-    describe '- deep map', ->
+    describe '- creates a new stream emitting mapped values', ->
       When ->
-        s3 = @s2.map(R.multiply(5))
-        s3.subscribe (@result) =>
-        @subject.put 2
-      Then -> @result == 15
+        @s2.subscribe (@result) =>
+        @subject.put 1
+      Then -> @result == 2
+
+      describe '- deep map', ->
+        When ->
+          s3 = @s2.map(R.multiply(5))
+          s3.subscribe (@result) =>
+          @subject.put 2
+        Then -> @result == 15
+
+    describe '- contains nothing if the original stream was empty', ->
+      When -> @result = @s2.extract()
+      Then -> @result == undefined
+
+    describe '- contains the last element, mapped', ->
+      Given -> @subject.put(1)
+      When -> @result = @s2.extract()
+      Then -> @result == 2
 
   describe '#ap', ->
     When ->
