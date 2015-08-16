@@ -1,6 +1,6 @@
 {
   "name": "refunc",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Non bloated fantasy landish functional reactive programming",
   "main": "index.js",
   "scripts": {
