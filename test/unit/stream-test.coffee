@@ -65,20 +65,6 @@ describe 'stream', ->
       When -> @result = @s2.extract()
       Then -> @result == 2
 
-  describe '#ap', ->
-    When ->
-      s1 = Stream.of(R.add(1))
-      s2 = s1.ap(Stream.of(2))
-      @result = s2.extract()
-    Then -> @result == 3
-
-  describe '#chain', ->
-    When ->
-      createLengthStream = (val) -> Stream.of val.length
-      resultStream = Stream.of([4,5,6]).chain(createLengthStream)
-      @result = resultStream.extract()
-    Then -> @result == 3
-
   describe '#reduce', ->
     appendTo = R.flip R.append
     When ->
