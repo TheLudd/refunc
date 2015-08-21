@@ -105,3 +105,15 @@ describe 'stream', ->
       @subject.put(2)
     When -> @result = @subject.drain()
     Then -> @result.should.deep.equal [ 1, 2 ]
+
+  describe '#filter', ->
+    Given -> @subject = Stream()
+    When ->
+      @result = []
+      @filtered = @subject.filter(R.is(Number))
+      @filtered.subscribe (v) => @result.push v
+      @subject.put '1'
+      @subject.put 1
+      @subject.put {}
+      @subject.put 2
+    Then -> @result.should.deep.equal [ 1, 2 ]
