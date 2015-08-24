@@ -103,8 +103,21 @@ describe 'stream', ->
       @subject = Stream()
       @subject.put(1)
       @subject.put(2)
-    When -> @result = @subject.drain()
-    Then -> @result.should.deep.equal [ 1, 2 ]
+
+    describe '- on original stream', ->
+      When -> @result = @subject.drain()
+      Then -> @result.should.deep.equal [ 1, 2 ]
+
+    describe '- on mapped stream', ->
+      Given -> @mapped = @subject.map R.add(1)
+      When -> @result = @mapped.drain()
+      Then -> @result.should.deep.equal [ 2, 3 ]
+
+      describe '- with later received events', ->
+        Given -> @subject.put(3)
+        Then -> @result.should.deep.equal [ 2, 3, 4 ]
+
+    describe '- on filtered stream', ->
 
   describe '#filter', ->
     Given -> @subject = Stream()
