@@ -1,5 +1,7 @@
 # refunc
 
+[![Build Status](https://travis-ci.org/TheLudd/refunc.svg?branch=master)](https://travis-ci.org/TheLudd/refunc)
+
 A very small, and thus very powerful functional reactive programming library.
 
 Versions lower than `0.1.0` are considered experimental. I try them out myself in real world applications and add what is needed step by step. I invite you to do the same if you'd like.
